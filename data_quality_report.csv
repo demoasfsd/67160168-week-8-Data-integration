@@ -1,0 +1,10 @@
+﻿stage,check,count,reason
+dedupe,duplicate order_id,2,order_id ซ้ำ - เก็บเฉพาะแถวล่าสุดตามลำดับที่ปรากฏ (keep='last')
+clean,missing email,5,email เป็นค่าว่าง - คงแถวไว้ (ไม่กระทบการคำนวณยอดขาย) แต่บันทึกไว้
+dedupe,duplicate customer_id,3,customer_id ซ้ำ (ข้อมูลซ้ำทุกคอลัมน์) - เก็บแถวแรกไว้
+dedupe,duplicate payment order_id,1,order_id ซ้ำในไฟล์ payments (แถวซ้ำทุกคอลัมน์) - เก็บแถวแรกไว้ เพื่อให้ merge เป็น 1:1 ได้
+integrate,unmatched customer_id,22,customer_id ในคำสั่งซื้อไม่พบใน customers_crm (Master Data)
+integrate,unmatched product_id,2,product_id ในคำสั่งซื้อไม่พบใน product_master (Master Data)
+validate,quantity <= 0,2,quantity ต้อง > 0 ตามกติกาทางธุรกิจ - ตัดออกจาก fact_sales
+validate,unit_price invalid,2,unit_price ต้อง > 0 และไม่ใช่ค่าว่าง ตามกติกาทางธุรกิจ - ตัดออกจาก fact_sales
+validate,payment_status != PAID,64,นับเป็นยอดขายเฉพาะเมื่อ payment.status = PAID เท่านั้น (รวม FAILED/REFUNDED/ไม่พบ payment)
